@@ -9,7 +9,7 @@ const Home = () => {
       <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-4 py-20">
         <GridPattern
           className="absolute inset-0 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"
-          yOffset={-96}
+          y={-96}
           squares={[
             [4, 4],
             [5, 1],
