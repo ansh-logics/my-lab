@@ -11,12 +11,11 @@ const io = new Server(httpServer,{
 });
 io.on("connection", (socket) => {
     console.log("a user is connected", socket.id);
-    socket.on("hello", (data) =>{
-        console.log(data.message);
-    })
-    socket.broadcast.emit("announcement", {
-        user:socket.id,
-        message: "Hey guys",
+    socket.on("mouseChange", (data)=>{
+        socket.broadcast.emit("mouseMove", {id:socket.id, 
+            x:data.x,
+            y:data.y
+       });
     })
 });
 
