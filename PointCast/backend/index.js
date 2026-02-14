@@ -16,6 +16,9 @@ io.on("connection", (socket) => {
             x:data.x,
             y:data.y
        });
+    });
+    socket.on("disconnect", ()=>{
+        socket.broadcast.emit("removeCursor", socket.id);
     })
 });
 

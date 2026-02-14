@@ -24,6 +24,21 @@ export default function App() {
     }
   },[ ])
 
+  //removing cursor
+  useEffect(() =>{
+    const handleRemove = (id) =>{
+      setCursors(prev =>{
+        const updated = {...prev};
+        delete updated[id];
+        return updated;
+      })
+    }
+    socket.on("removeCursor", handleRemove);
+    return () =>{
+      socket.off("removeCursor", handleRemove);
+    }
+  }, [])
+
   //adding removing socket
   useEffect(() => {
     socket.on("mouseMove", (data) => {
