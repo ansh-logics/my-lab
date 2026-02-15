@@ -9,17 +9,32 @@ const io = new Server(httpServer,{
         origin: "http://localhost:5173"
     }
 });
+const users = {};
+
 io.on("connection", (socket) => {
-    console.log("a user is connected", socket.id);
-    socket.on("mouseChange", (data)=>{
-        socket.broadcast.emit("mouseMove", {id:socket.id, 
-            x:data.x,
-            y:data.y
-       });
+  console.log("User connected:", socket.id);
+
+  socket.on("join", ({ name, color }) => {
+    users[socket.id] = { name, color };
+    console.log(users);
+  });
+
+  socket.on("mouseChange", ({ x, y }) => {
+    const user = users[socket.id];
+
+    socket.broadcast.emit("mouseMove", {
+      id: socket.id,
+      x,
+      y,
+      name: user.name,
+      color: user.color
     });
-    socket.on("disconnect", ()=>{
-        socket.broadcast.emit("removeCursor", socket.id);
-    })
+  });
+
+  socket.on("disconnect", () => {
+    delete users[socket.id];
+    socket.broadcast.emit("removeCursor", socket.id);
+  });
 });
 
 httpServer.listen(3000, ()=>{
