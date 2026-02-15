@@ -1,6 +1,17 @@
 import { io } from 'socket.io-client';
 
-// "undefined" means the URL will be computed from the `window.location` object
-const URL ='http://localhost:3000';
+// Use env var so you can update ngrok URL without code changes (free ngrok URLs change on restart).
+// Fallback for local dev without ngrok.
+const URL =
+  import.meta.env.VITE_SOCKET_URL ||
+  'https://cutaneous-isabella-untrustful.ngrok-free.dev';
 
-export const socket = io(URL);
+const ngrokHeader = { 'ngrok-skip-browser-warning': '1' };
+
+export const socket = io(URL, {
+  
+  extraHeaders: ngrokHeader,
+  transportOptions: {
+    polling: { extraHeaders: ngrokHeader },
+  },
+});
